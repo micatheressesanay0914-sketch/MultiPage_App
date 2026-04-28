@@ -9,23 +9,6 @@ st.set_page_config(
     layout="wide"
 )
 
-# ---------- SIDEBAR ----------
-with st.sidebar:
-    st.title("💼 Portfolio Menu")
-    page = st.radio(
-        "Navigate",
-        ["Home", "About", "Projects", "Contact"]
-    )
-
-    st.markdown("---")
-    st.subheader("📌 Quick Info")
-    st.write("👩‍💻 BS Computer Science Student")
-    st.write("🌐 Python | Web Development")
-    st.write("🎨 UI/UX Enthusiast")
-
-    st.markdown("---")
-    st.info("Welcome to my portfolio site!")
-
 # ---------- LOAD IMAGE FUNCTION ----------
 def get_base64_image(image_path):
     if os.path.exists(image_path):
@@ -62,20 +45,21 @@ st.markdown(f"""
     align-items: center;
 }}
 
+/* PROFILE IMAGE - PERFECT CIRCLE FIX */
 .profile-img {{
     width: 220px;
     height: 220px;
-    aspect-ratio: 1 / 1;
-    border-radius: 50%;
+    aspect-ratio: 1 / 1;        /* Sinisiguro na square ang ratio */
+    border-radius: 50%;         /* Ginagawang bilog ang square */
     border: 6px solid #ffb199;
-    object-fit: cover;
-    object-position: center top;
+    object-fit: cover;          /* Hindi maba-banat ang image */
+    object-position: center top; 
     box-shadow: 0 15px 40px rgba(0,0,0,0.4);
     position: relative;
     z-index: 10;
-    margin-bottom: -110px;
+    margin-bottom: -110px;      /* Offset para pumatong sa banner */
     transition: transform 0.3s ease;
-    background-color: #243b55;
+    background-color: #243b55;   /* Fallback color habang naglo-load */
 }}
 
 .profile-img:hover {{
@@ -91,8 +75,15 @@ st.markdown(f"""
     text-align: center;
     background: rgba(255,255,255,0.08);
     backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255,255,255,0.1);
     box-shadow: 0 25px 70px rgba(0,0,0,0.5);
+    animation: fadeIn 1.2s ease;
+}}
+
+@keyframes fadeIn {{
+    from {{opacity: 0; transform: translateY(30px);}}
+    to {{opacity: 1; transform: translateY(0);}}
 }}
 
 .banner-headline {{
@@ -100,12 +91,15 @@ st.markdown(f"""
     font-weight: 900;
     color: white;
     font-family: 'Barlow Condensed', sans-serif;
+    letter-spacing: 2px;
     text-transform: uppercase;
+    margin-bottom: 20px;
 }}
 
 .intro {{
     max-width: 750px;
     margin: 0 auto;
+    text-align: center;
     color: #e0e0e0;
     font-size: 20px;
     line-height: 1.8;
@@ -117,6 +111,7 @@ st.markdown(f"""
     font-weight: 700;
 }}
 
+/* Mobile Responsiveness */
 @media (max-width: 768px) {{
     .profile-img {{
         width: 160px;
@@ -134,36 +129,26 @@ st.markdown(f"""
 </style>
 """, unsafe_allow_html=True)
 
-# ---------- PAGE CONTENT ----------
-if page == "Home":
-    st.markdown(f"""
-    <div class="hero-container">
-        <img src="data:image/jpeg;base64,{img_base64}" class="profile-img">
-        <div class="banner-wrapper">
-            <div class="banner-headline">
-                Mica Theresse V. Sanay
-            </div>
-            <div class='intro'>
-                Hello! I am a <span class='highlight'>BS Computer Science student</span> passionate about building modern applications and exploring new technologies.
-                <br><br>
-                I enjoy designing clean user interfaces and developing functional systems using Python and web technologies.
-                <br>
-                Feel free to explore my portfolio and see my work.
-            </div>
+# ---------- RENDER INTERFACE ----------
+
+# Main Hero UI
+st.markdown(f"""
+<div class="hero-container">
+    <img src="data:image/jpeg;base64,{img_base64}" class="profile-img" alt="Mica's Profile">
+    <div class="banner-wrapper">
+        <div class="banner-headline">
+            Mica Theresse V. Sanay
+        </div>
+        <div class='intro'>
+            Hello! I am a <span class='highlight'>BS Computer Science student</span> passionate about building modern applications and exploring new technologies.
+            <br><br>
+            I enjoy designing clean user interfaces and developing functional systems using Python and web technologies.
+            <br>
+            Feel free to explore my portfolio and see my work.
         </div>
     </div>
-    """, unsafe_allow_html=True)
+</div>
+""", unsafe_allow_html=True)
 
-elif page == "About":
-    st.title("About Me")
-    st.write("This is the About section. You can add your story, education, and skills here.")
-
-elif page == "Projects":
-    st.title("Projects")
-    st.write("Showcase your projects here.")
-
-elif page == "Contact":
-    st.title("Contact")
-    st.write("Add your email, socials, or contact form here.")
-
+# Add some breathing room at the bottom
 st.markdown("<br><br>", unsafe_allow_html=True)
