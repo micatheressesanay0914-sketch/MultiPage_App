@@ -1,154 +1,152 @@
 import streamlit as st
-import base64
-import os
 
-# ---------- PAGE CONFIG ----------
+# Set page configuration
 st.set_page_config(
     page_title="Mica Theresse Sanay | Portfolio",
-    page_icon="💼",
+    page_icon="✨",
     layout="wide"
 )
 
-# ---------- LOAD IMAGE FUNCTION ----------
-def get_base64_image(image_path):
-    if os.path.exists(image_path):
-        with open(image_path, "rb") as img_file:
-            return base64.b64encode(img_file.read()).decode()
-    return ""
+# 1. Global Theme and Floating Bubbles (CSS/JS Injection)
+st.markdown("""
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap');
 
-img_base64 = get_base64_image("images/mica.jpg")
+    /* Main App Background */
+    .stApp {
+        background-color: #FDF0F5;
+        font-family: 'Fredoka', sans-serif;
+    }
 
-# ---------- CUSTOM CSS STYLES ----------
-st.markdown(f"""
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@400;500;600&display=swap');
+    /* Sidebar Styling */
+    [data-testid="stSidebar"] {
+        background-color: #F7D9E3 !important;
+        border-right: 5px solid #B19CD9;
+    }
+    
+    /* Sidebar Text/Labels */
+    [data-testid="stSidebar"] .stMarkdown p {
+        color: #7B61FF !important;
+        font-weight: 600;
+        font-size: 18px;
+    }
 
-/* Dynamic Background */
-.stApp {{
-    background: linear-gradient(-45deg, #141e30, #243b55, #1f1c2c, #2c3e50);
-    background-size: 400% 400%;
-    animation: bgMove 18s ease infinite;
-}}
+    h1, h2 {
+        color: #B19CD9 !important;
+    }
 
-@keyframes bgMove {{
-    0% {{background-position: 0% 50%;}}
-    50% {{background-position: 100% 50%;}}
-    100% {{background-position: 0% 50%;}}
-}}
+    h3 {
+        color: #7B61FF !important;
+    }
+            
+    .main .block-container {
+        padding-top: 5rem;
+        z-index: 1;
+    }
 
-/* Hero Section Styling */
-.hero-container {{
-    text-align: center;
-    padding-top: 60px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}}
+    /* Bubbles Animation */
+    .bubbles-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        overflow: hidden;
+        pointer-events: none; 
+    }
 
-/* PROFILE IMAGE - PERFECT CIRCLE FIX */
-.profile-img {{
-    width: 220px;
-    height: 220px;
-    aspect-ratio: 1 / 1;        /* Sinisiguro na square ang ratio */
-    border-radius: 50%;         /* Ginagawang bilog ang square */
-    border: 6px solid #ffb199;
-    object-fit: cover;          /* Hindi maba-banat ang image */
-    object-position: center top; 
-    box-shadow: 0 15px 40px rgba(0,0,0,0.4);
-    position: relative;
-    z-index: 10;
-    margin-bottom: -110px;      /* Offset para pumatong sa banner */
-    transition: transform 0.3s ease;
-    background-color: #243b55;   /* Fallback color habang naglo-load */
-}}
+    .bubble {
+        position: absolute;
+        bottom: -150px;
+        background: rgba(255, 183, 206, 0.4);
+        border-radius: 50%;
+        opacity: 0.6;
+        animation: float 15s infinite ease-in;
+    }
 
-.profile-img:hover {{
-    transform: scale(1.08);
-}}
+    .bubble:nth-child(even) {
+        background: rgba(177, 156, 217, 0.4);
+    }
 
-.banner-wrapper {{
-    width: 85%;
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 130px 30px 60px 30px;
-    border-radius: 25px;
-    text-align: center;
-    background: rgba(255,255,255,0.08);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255,255,255,0.1);
-    box-shadow: 0 25px 70px rgba(0,0,0,0.5);
-    animation: fadeIn 1.2s ease;
-}}
+    @keyframes float {
+        0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
+        10% { opacity: 0.6; }
+        50% { transform: translateY(-50vh) translateX(50px) rotate(180deg); }
+        90% { opacity: 0.6; }
+        100% { transform: translateY(-120vh) translateX(-20px) rotate(360deg); opacity: 0; }
+    }
 
-@keyframes fadeIn {{
-    from {{opacity: 0; transform: translateY(30px);}}
-    to {{opacity: 1; transform: translateY(0);}}
-}}
+    /* Hero Text & Image Styling */
+    .hero-text h1 {
+        font-family: 'Fredoka', sans-serif !important;
+        color: #B19CD9 !important;
+        font-size: 75px !important; 
+        margin-bottom: -10px !important;
+        font-weight: 600 !important;
+        line-height: 1.1;
+    }
 
-.banner-headline {{
-    font-size: clamp(35px, 8vw, 70px);
-    font-weight: 900;
-    color: white;
-    font-family: 'Barlow Condensed', sans-serif;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-}}
+    .profile-container {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+    }
 
-.intro {{
-    max-width: 750px;
-    margin: 0 auto;
-    text-align: center;
-    color: #e0e0e0;
-    font-size: 20px;
-    line-height: 1.8;
-    font-family: 'Barlow', sans-serif;
-}}
+    .stImage img {
+        border-radius: 50px 50px 100px 100px !important;
+        border: 8px solid #B19CD9 !important;
+        box-shadow: 15px 15px 0px #FFB7CE !important;
+        width: 380px !important;
+        transition: 0.4s ease-in-out;
+    }
+    
+    .stImage img:hover {
+        transform: rotate(-3deg) scale(1.05);
+    }
+    </style>
 
-.highlight {{
-    color: #ffb199;
-    font-weight: 700;
-}}
-
-/* Mobile Responsiveness */
-@media (max-width: 768px) {{
-    .profile-img {{
-        width: 160px;
-        height: 160px;
-        margin-bottom: -80px;
-    }}
-    .banner-wrapper {{
-        padding-top: 100px;
-        width: 95%;
-    }}
-    .intro {{
-        font-size: 16px;
-    }}
-}}
-</style>
-""", unsafe_allow_html=True)
-
-# ---------- RENDER INTERFACE ----------
-
-# Main Hero UI
-st.markdown(f"""
-<div class="hero-container">
-    <img src="data:image/jpeg;base64,{img_base64}" class="profile-img" alt="Mica's Profile">
-    <div class="banner-wrapper">
-        <div class="banner-headline">
-            Mica Theresse V. Sanay
-        </div>
-        <div class='intro'>
-            Hello! I am a <span class='highlight'>BS Computer Science student</span> passionate about building modern applications and exploring new technologies.
-            <br><br>
-            I enjoy designing clean user interfaces and developing functional systems using Python and web technologies.
-            <br>
-            Feel free to explore my portfolio and see my work.
-        </div>
+    <div class="bubbles-container">
+        <div class="bubble" style="width: 60px; height: 60px; left: 5%; animation-delay: 0s;"></div>
+        <div class="bubble" style="width: 100px; height: 100px; left: 15%; animation-delay: 2s;"></div>
     </div>
-</div>
-""", unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 
-# Add some breathing room at the bottom
-st.markdown("<br><br>", unsafe_allow_html=True)
+# --- SIDEBAR CONTENT ---
+with st.sidebar:
+    st.markdown("## 🎀 Navigation")
+    page = st.radio("Go to:", ["Home", "Projects", "About Me", "Contact"])
+    
+    st.markdown("---")
+    st.markdown("### 💻 Tech Stack")
+    st.info("Python • Streamlit • CSS")
+    
+    st.markdown("### ✨ Socials")
+    st.write("🔗 [LinkedIn](#)")
+    st.write("🐙 [GitHub](#)")
+
+# --- MAIN CONTENT ---
+if page == "Home":
+    col1, col2 = st.columns([1.2, 1], gap="large")
+
+    with col1:
+        st.markdown('<div class="hero-text">', unsafe_allow_html=True)
+        st.markdown("<h1>Hi, I'm Mica Theresse Sanay</h1>", unsafe_allow_html=True)
+        st.markdown("<h3>Bachelor of Science in Computer Science</h3>", unsafe_allow_html=True)
+        st.markdown("<p>I am a BS Computer Science student passionate about building modern applications and exploring new technologies.</p>", unsafe_allow_html=True)
+        
+        if st.button("Contact Me"):
+            st.toast("Let's get in touch!", icon="✉️")
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    with col2:
+        st.markdown('<div class="profile-container">', unsafe_allow_html=True)
+        # Ensure the path to your image is correct
+        st.image("images/mica.png")
+        st.markdown('</div>', unsafe_allow_html=True)
+
+elif page == "Projects":
+    st.title("My Projects")
+    st.write("Coming soon! I'm currently working on some exciting new tech.")
