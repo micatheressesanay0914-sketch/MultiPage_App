@@ -44,7 +44,7 @@ Follow these steps to run the project locally:
 ### 1. Clone the repository
 
 ```
-git clone https://github.com/your-username/your-repo-name.git
+git clone https://github.com/micatheressesanay0914-sketch/MultiPage_App.git
 ```
 
 ### 2. Navigate to the project folder
@@ -69,7 +69,7 @@ streamlit run Home.py
 Feel free to connect with me:
 
 * 📧 Email: [micatheressesanay0914@gmail.com](mailto:micatheressesanay0914@gmail.com)
-* 💻 GitHub: https://github.com/your-username
+* 💻 GitHub: https://github.com/micatheressesanay0914-sketch
 
 ---
 
