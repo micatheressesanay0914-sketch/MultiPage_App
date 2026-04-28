@@ -29,9 +29,7 @@ st.markdown(f"""
     background-size: 400% 400%;
     animation: bgMove 18s ease infinite;
 }}
- [data-testid="stSidebar"] {
-        background-color: #F7D9E3 !important;
-    }
+
 @keyframes bgMove {{
     0% {{background-position: 0% 50%;}}
     50% {{background-position: 100% 50%;}}
